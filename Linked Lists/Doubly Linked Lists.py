@@ -56,125 +56,105 @@ class DoublyLL():
                 return f"Value, {val} Found"
             curr = curr.next
         return f"Value, {val} not found"
-        
+    
     
     def InsertStart(self, val):
-        curr = self.head
         value = Node(val)
-        if curr == None:
-            self.head = value
-            return
-        value.next = self.head
-        self.head = value
+        curr = self.head
         curr.prev = value
+        value.next = curr
+        self.head = value
     
     def InsertEnd(self, val):
         curr = self.head
         value = Node(val)
-        if curr == None:
-            print("Linked List is empty")
-            return
-        if curr.next == None:
-            curr.next = value
-            value.prev = curr
-            return
-        
         while curr.next:
             curr = curr.next
-        value.prev = curr
         curr.next = value
+        value.prev = curr
         
     
     def Insert(self, val, pos):
-        value = Node(val)
         curr = self.head
-        nextval = curr.next
-        if curr == None:
-            print("Linked List is empty")
-            return
-        if nextval == None:
-            print("Linked list only has one node")
+        value = Node(val)
+        
+        if pos == 0:
+            if self.head:           
+                self.head.prev = value
+            value.next = self.head
+            self.head = value
             return
         
-        
-        index = 0
-        while nextval:
-            if index == pos - 1:
-                curr.next = value
-                value.prev = curr
-                value.next = nextval
+        for _ in range(pos - 2):
+            if curr is None:
+                print("Invalid position")
                 return
-            elif index == pos:
-                value.next = self.head
-                curr.prev = value
-                self.head = value
-            nextval = nextval.next
             curr = curr.next
-            index += 1
-            
-        if pos > index or pos < 0:
-            print("Invalid position")
-            return
+        nextcurr = curr.next
+        curr.next = value
+        value.prev = curr
+        value.next = nextcurr
+        if nextcurr is not None:
+            nextcurr.prev = value
         
-        
-                        
-    
+
     def DeleteHead(self):
         curr = self.head
-        if curr == None:
+        
+        if self.head is None:
             print("Linked List is empty")
             return
-        self.head = curr.next
+        if curr.next is not None:
+            curr.next.prev = None 
+            self.head = curr.next
+        else:
+            self.head = None
         
           
     def DeleteTail(self):
         curr = self.head
-        nextval = curr.next
         
-        if curr == None:
-            print("Linked list is empty")
+        if self.head is None:
+            print("Linked List is empty")
             return
-        if nextval == None:
-            print("Linked list only has one node")
+        if self.head.next is None:
+            self.head = None
             return
         
-        while nextval.next:
-            nextval = nextval.next
+        while curr.next:
             curr = curr.next
-        curr.next = None
+        curr.prev.next = None
         
     
     def Delete(self, pos):
         curr = self.head
-        nextval = curr.next
         
-        if curr == None:
+        if self.head is None:
             print("Linked List is empty")
             return
-        if nextval == None:
-            print("Linked list only has one node")
-            return
         if pos == 0:
-            nextval.prev = None
-            self.head = nextval
+            if curr.next is not None:
+                curr.next.prev = None 
+            self.head = curr.next
             return
         
-        index = 0
-        while nextval:
-            if index == pos - 1:
-                curr.next = None
+        index = 1
+        while curr and index < pos:
+            if curr.next is None:
+                print("Invalid position")
                 return
-            nextval = nextval.next
             curr = curr.next
             index += 1
-        
-        if pos > index or pos < 0:
-            print("Invalid position")
-            return
-        
-        
-    
-    
+            
+        if curr.next is not None:
+            curr.prev.next = curr.next
+            curr.next.prev = curr.prev
+        else:
+            curr.prev.next = curr.next
+            
+   
+   
+       
 A = Node(1)
 B = Node(2)
 C = Node(3)
@@ -196,11 +176,13 @@ F.prev = E
 Dll = DoublyLL()
 Dll.head = A
 print(Dll.Display())
+# Dll.Traverse(3)
 # Dll.TraverseBack()
-# Dll.Delete(0)
+Dll.Delete(6)
 # Dll.DeleteHead()
 # Dll.DeleteTail()
 # print(Dll.Search(3))
 # Dll.InsertStart(8)
-# Dll.Insert(7, 0)
+# Dll.InsertEnd(9)
+# Dll.Insert(7, 7)
 print(Dll.Display())

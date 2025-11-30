@@ -1,4 +1,3 @@
-
 class Node:
     
     def __init__(self, data):
@@ -56,60 +55,45 @@ class SinglyLL:
     
     # Insert at end
     def InsertEnd(self, val):
-        curr = self.head
-        nextval = curr.next
         value = Node(val)
-        
-        # If linked list is empty
-        if curr == None:
-            print("List is empty")
+
+        if self.head is None:
+            self.head = value
             return
-        # If linked list has only one value
-        if nextval == None:
-            curr.next = value
-            return
-        
-        while nextval:
-            curr.next = nextval
-            nextval = nextval.next
+
+        curr = self.head
+        while curr.next:
             curr = curr.next
+
         curr.next = value
+
         
                     
 
     # Insert element at position
     def Insert(self, val, pos):
-        curr = self.head
-        nextval = curr.next
         value = Node(val)
-        
-        if curr == None:
-            print("List is empty")
-            return
-        if nextval == None:
-            print("Linked list only has one node")
-            return
+
+        # Insert at head
         if pos == 0:
-            value.next = curr
+            value.next = self.head
             self.head = value
             return
-        
+
+        curr = self.head
         index = 0
-        while nextval:
-            if index == pos - 1:
-                curr.next = value
-                value.next = nextval
-                return
-            nextval = nextval.next
+
+        while curr and index < pos - 1:
             curr = curr.next
             index += 1
-        if nextval == None:
-            curr.next = value
-            index += 1
-            
-        if pos > index or pos < 0:
+
+        if curr is None:
             print("Invalid position")
             return
+
+        value.next = curr.next
+        curr.next = value
+
             
         
     
@@ -126,17 +110,15 @@ class SinglyLL:
     # Delete last element
     def DeleteLast(self):
         curr = self.head
-        nextval = curr.next
         
         if curr == None:
             print("Linked list is empty")
             return
-        if nextval == None:
+        if curr.next == None:
             print("Linked list only has one node")
             return
         
-        while nextval.next:
-            nextval = nextval.next
+        while curr.next.next:
             curr = curr.next
         curr.next = None
     
@@ -191,11 +173,11 @@ Sll.head = Head
 print(Sll.Display())
 # print(Sll.Search(20))
 # Sll.DeleteHead()
-# Sll.DeleteLast()
+Sll.DeleteLast()
 # Sll.Delete(6)
-print(Sll.Display())
-Sll.InsertEnd(7)
-Sll.InsertStart(7)
-Sll.Insert(0, 8)
+# print(Sll.Display())
+# Sll.InsertEnd(7)
+# Sll.InsertStart(7)
+# Sll.Insert(0, 8)
 print(Sll.Display())    
         
